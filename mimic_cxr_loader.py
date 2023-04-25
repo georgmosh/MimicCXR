@@ -38,10 +38,6 @@ class MimicCXRLoader(Dataset):
                 self.impression.append(impression[i])
                 self.images.append(images[j])
 
-class MimicCXRImageLoader(MimicCXRLoader):
-    def __init__(self, root=None, split='train'):
-        super(MimicCXRImageLoader, self).__init__(root, split)
-
     def __getitem__(self, index):
         # Image normalization
         image = Image.open(os.path.join(self.root, self.images[index]))
@@ -52,23 +48,10 @@ class MimicCXRImageLoader(MimicCXRLoader):
             transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ])
         image = preprocess(image)
-        caption = self.findings[index]
-
-        return image, caption
-
-
-class MimicCXRTextLoaderDuplicated(MimicCXRLoader):
-    def __init__(self, root=None, split='train'):
-        super(MimicCXRTextLoaderDuplicated, self).__init__(root, split)
-
-    def __getitem__(self, index):
         in_caption = self.impression[index]
         out_caption = self.findings[index]
 
-        return in_caption, out_caption
-
-    def __len__(self):
-        return len(self.images)
+        return [image, in_caption], out_caption
 
 
 class MimicCXRTextLoaderUnique(Dataset):
