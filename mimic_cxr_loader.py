@@ -71,7 +71,7 @@ class MimicCXRTextLoaderDuplicated(MimicCXRLoader):
         return len(self.images)
 
 
-class MimicCXRTextLoaderUnique(MimicCXRLoader):
+class MimicCXRTextLoaderUnique(Dataset):
     def __init__(self, root, split):
         # Initialize variables
         self.root = root if root is not None \
